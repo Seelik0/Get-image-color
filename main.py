@@ -32,10 +32,6 @@ class Maingui(QMainWindow):
         self.signals.start()
 
         self.overwrite_log()
-
-        if not os.path.exists("app.conf"):
-            with open("app.conf", "w", encoding="utf-8") as conf:
-                conf.write("True")
     
     def initUI(self):
         self.setWindowTitle("Screen Color")
@@ -66,8 +62,22 @@ class Maingui(QMainWindow):
         label_log_overwrite.setGeometry(20, 100, 160, 30)
 
         self.combo_log_overwrite = QComboBox(central_widget)
-        for s in ["ON", "OFF"]:
-            self.combo_log_overwrite.addItem(s)
+        if not os.path.exists("app.conf"):
+            with open("app.conf", "w", encoding="utf-8") as conf:
+                conf.write("True")
+
+        if os.path.exists("app.conf"):
+            with open("app.conf", "r", encoding="utf-8") as conf:
+                config = conf.read()
+                if config == "True":
+                    for s in ["ON", "OFF"]:
+                        self.combo_log_overwrite.addItem(s)
+                else:
+                    for s in ["OFF", "ON"]:
+                        self.combo_log_overwrite.addItem(s)
+        else:
+            for s in ["ON", "OFF"]:
+                self.combo_log_overwrite.addItem(s)
         self.combo_log_overwrite.currentTextChanged.connect(self.conf_write)
         self.combo_log_overwrite.setGeometry(0, 130, 190, 20)
 
