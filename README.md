@@ -1,2 +1,1 @@
-"# get-image-color" 
-"# Get-image-color" 
+練習用
